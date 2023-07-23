@@ -7,7 +7,6 @@ import generalStyles from "../../styles";
 
 // Import Dispatcher
 import GController from "../../controllers/generalController";
-import axios from "axios";
 
 
 export default function LoginScreen({ navigation }) {
@@ -19,12 +18,25 @@ export default function LoginScreen({ navigation }) {
     // ------ Event Handlers
     // Function called when the user presses Login button
     const loginHandler = async () => {
-        const loginInfo = {
-            username: username,
-            password: password
+
+        const { error, role } = await GController('LOGIN', username, password);
+        if (error) {
+            alert(error);
         }
-        
-        navigation.navigate('ModeratorMain')
+        else {
+            switch (role) {
+                case 'customer':
+                    navigation.navigate('CustomerMain');
+                    break;
+                case 'moderator':
+                    navigation.navigate('ModeratorMain');
+                    break;
+                default:
+                    alert('Invalid role');
+                    break;
+            }
+        }
+        // navigation.navigate('ModeratorMain')
         //const receivedData = await GController('CHECKLEGIT', loginInfo)
         // receivedData.data.map((item) => {
         //     console.log(item.name)

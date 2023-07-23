@@ -1,10 +1,9 @@
 import checkLegit from "../models/general/checkLegit"
-
+import login from "../models/general/login"
 export default async function GController (type, ...payload) {
     switch (type) {
         case 'CHECKLEGIT' : {
-            const receivedData = await checkLegit(payload)
-            return receivedData
+            return await checkLegit(payload)
         }
 
         case 'FORGOTPASSWORD' : {
@@ -17,6 +16,16 @@ export default async function GController (type, ...payload) {
 
         case 'MODERATORREGISTER' : {
             
+        }
+
+        case 'LOGIN':
+        {
+            // destructure payload
+            const [username, password] = payload;
+            console.log(`[INFO] Login username: ${username} - password: ${password}`);
+            const result = await login(username, password);
+            console.log(`[INFO] Login result: ${JSON.stringify(result)}`);
+            return result;
         }
 
         default : {
