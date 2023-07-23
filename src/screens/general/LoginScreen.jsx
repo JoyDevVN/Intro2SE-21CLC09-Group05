@@ -18,7 +18,6 @@ export default function LoginScreen({ navigation }) {
     // ------ Event Handlers
     // Function called when the user presses Login button
     const loginHandler = async () => {
-
         const { error, role } = await GController('LOGIN', username, password);
         if (error) {
             alert(error);

@@ -1,5 +1,7 @@
 import checkLegit from "../models/general/checkLegit"
 import login from "../models/general/login"
+import register from "../models/general/register"
+
 export default async function GController (type, ...payload) {
     switch (type) {
         case 'CHECKLEGIT' : {
@@ -11,11 +13,13 @@ export default async function GController (type, ...payload) {
         }
 
         case 'CUSTOMERREGISTER' : {
-        
+            const [username, password, email, role, full_name] = payload;
+            return await register({username, password, email, role, full_name});
         }
 
         case 'MODERATORREGISTER' : {
-            
+            const [username, password, email, role, hotel_name, address, description, owner_name] = payload;
+            return await register({username, password, email, role, hotel_name, address, description, owner_name});
         }
 
         case 'LOGIN':

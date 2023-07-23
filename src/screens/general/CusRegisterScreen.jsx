@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, ScrollView } from "react-native";
 import Checkbox from 'expo-checkbox';
-
+import GController from "../../controllers/generalController";
 
 // Import Style & Theme
 import { COLORS, TEXTS } from '../../constants/theme'
@@ -19,9 +19,28 @@ export default function CusRegisterScreen({ navigation }) {
     const [isChecked, setChecked] = useState(false);
 
     // ------ Event Handlers
-    const submitHandler = () => {
-        navigation.navigate("LoginPage")
-        alert('Register successfully');
+    const submitHandler = async () => {
+        // navigation.navigate("LoginPage")
+        // alert('Register successfully');
+        if (username === '' || fullname === '' || email === '' || password === '' || confirm === '') {
+            alert('Please fill in all fields');
+        }
+        else if (password !== confirm) {
+            alert('Passwords do not match');
+        }
+        else if (!isChecked) {
+            alert('Please accept the Terms of Service');
+        }
+        else {
+            const { res, error } = await GController('CUSTOMERREGISTER', username, password, email, "customer" ,fullname);
+            if (error) {
+                alert(error);
+            }
+            else if (res) {
+                alert('Register successfully');
+                navigation.navigate('LoginPage');
+            }
+        }
     }
 
     // ------ UI Renderer
@@ -53,7 +72,7 @@ export default function CusRegisterScreen({ navigation }) {
 
             
             {/* ====== Input ====== */}
-            <Text style={{ ...generalStyles.input_label, fontWeight: 'bold', marginTop: 2, marginTop: 20 }}>Username</Text>
+            <Text style={{ ...generalStyles.input_label, fontWeight: 'bold', marginTop: 2 }}>Username</Text>
             <TextInput
                 style={generalStyles.input_field}
                 placeholder='Enter Username'
